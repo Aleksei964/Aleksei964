@@ -4,7 +4,6 @@ import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,27 +13,30 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-
     @Override
     public void createUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        String sqlQuery = "CREATE TABLE IF NOT EXISTS users " + "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " + "name VARCHAR(50) NOT NULL, lastName VARCHAR(50) NOT NULL," + "age TINYINT NOT NULL)";
-        Query query = session.createSQLQuery(sqlQuery).addEntity(User.class);
-        query.executeUpdate();
-        transaction.commit();
-        session.close();
+        try (Session session = Util.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            String sqlQuery = "CREATE TABLE IF NOT EXISTS users " + "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, " + "name VARCHAR(50) NOT NULL, lastName VARCHAR(50) NOT NULL," + "age TINYINT NOT NULL)";
+            Query query = session.createSQLQuery(sqlQuery).addEntity(User.class);
+            query.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void dropUsersTable() {
-        Session session = Util.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        String sqlQuery = "DROP TABLE IF EXISTS users";
-        Query query = session.createSQLQuery(sqlQuery).addEntity(User.class);
-        query.executeUpdate();
-        transaction.commit();
-        session.close();
+        try (Session session = Util.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            String sqlQuery = "DROP TABLE IF EXISTS users";
+            Query query = session.createSQLQuery(sqlQuery).addEntity(User.class);
+            query.executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

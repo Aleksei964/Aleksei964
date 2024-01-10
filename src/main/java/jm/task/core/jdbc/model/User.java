@@ -1,6 +1,4 @@
 package jm.task.core.jdbc.model;
-
-import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
